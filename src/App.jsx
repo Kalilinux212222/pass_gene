@@ -86,7 +86,6 @@ const App = () => {
                 className='n'
                     type="number"
                     min="1"
-                    value={passwordLength}
                     onChange={(e) => setPasswordLength(Number(e.target.value))}
                 />
             </div>
