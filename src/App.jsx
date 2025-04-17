@@ -83,7 +83,7 @@ const App = () => {
     };
 
     const handleFileUpload = (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files[0 ];
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -97,6 +97,20 @@ const App = () => {
             };
             reader.readAsText(file);
         }
+    };
+
+    const downloadPasswords = () => {
+        const passwords = `Generated Password: ${generatedPassword}\nGenerated Encrypted Password: ${generatedEncryptedPassword}`;
+        const blob = new Blob([passwords], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'passwords.txt'; // Name of the file to be downloaded
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url); // Clean up the URL object
     };
 
     return (
@@ -118,7 +132,7 @@ const App = () => {
             <div className="input-group">
                 <label>
                     <input
- type="checkbox"
+                        type="checkbox"
                         checked={includeLetters}
                         onChange={(e) => setIncludeLetters(e.target.checked)}
                     />
@@ -143,6 +157,7 @@ const App = () => {
             </div>
 
             <button className="btn" onClick={generatePassword}>Generate Password</button>
+            <button className="btn" onClick={downloadPasswords}>Download Passwords</button>
 
             <div className="input-group">
                 <label>Original Password:</label>
