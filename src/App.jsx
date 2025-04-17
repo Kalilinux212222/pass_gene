@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css'; // Import the CSS file for styling
 
 const App = () => {
@@ -11,6 +11,14 @@ const App = () => {
     const [includeLetters, setIncludeLetters] = useState(true);
     const [includeNumbers, setIncludeNumbers] = useState(true);
     const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
+
+    useEffect(() => {
+        // Load stored passwords from local storage on component mount
+        const storedPassword = localStorage.getItem('generatedPassword');
+        const storedEncryptedPassword = localStorage.getItem('generatedEncryptedPassword');
+        if (storedPassword) setGeneratedPassword(storedPassword);
+        if (storedEncryptedPassword) setGeneratedEncryptedPassword(storedEncryptedPassword);
+    }, []);
 
     const generatePassword = () => {
         const chars = "abcdefghijklmnopqrstuvwxyz";
@@ -34,17 +42,18 @@ const App = () => {
         }
 
         setGeneratedPassword(password);
-        setGeneratedEncryptedPassword(generateEncryptedPassword(password));
+        const encrypted = generateEncryptedPassword(password);
+        setGeneratedEncryptedPassword(encrypted);
+        localStorage.setItem('generatedPassword', password);
+        localStorage.setItem('generatedEncryptedPassword', encrypted);
         setVerificationMessage(''); // Clear previous messages
     };
 
     const generateEncryptedPassword = (password) => {
-        // For simplicity, we will just reverse the password as a mock "encryption"
         return password.split('').reverse().join('');
     };
 
     const decryptPassword = (encryptedPassword) => {
-        // Reverse the encrypted password to get the original password
         return encryptedPassword.split('').reverse().join('');
     };
 
@@ -64,7 +73,6 @@ const App = () => {
             message += 'Encrypted password is incorrect.<br />';
         }
 
-        // Check if the decrypted password matches the original password
         if (decryptedPassword === originPassword) {
             message += 'Decrypted password matches the original password!<br />';
         } else {
@@ -72,6 +80,23 @@ const App = () => {
         }
 
         setVerificationMessage(message);
+    };
+
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                const passwords = content.split('\n').map(line => line.trim()).filter(line => line);
+                passwords.forEach(password => {
+                    const encrypted = generateEncryptedPassword(password);
+                    localStorage.setItem(password, encrypted);
+                });
+                alert('Passwords uploaded and stored successfully!');
+            };
+            reader.readAsText(file);
+        }
     };
 
     return (
@@ -83,7 +108,7 @@ const App = () => {
             <div className="input-group">
                 <label>Password Length:</label>
                 <input
-                className='n'
+                    className='n'
                     type="number"
                     min="1"
                     onChange={(e) => setPasswordLength(Number(e.target.value))}
@@ -93,7 +118,7 @@ const App = () => {
             <div className="input-group">
                 <label>
                     <input
-                        type="checkbox"
+ type="checkbox"
                         checked={includeLetters}
                         onChange={(e) => setIncludeLetters(e.target.checked)}
                     />
@@ -143,7 +168,15 @@ const App = () => {
                 <button className="btn" onClick={verifyPasswords}>Verify Encrypted</button>
             </div>
 
-            {/* Display verification messages */}
+            <div className="input-group">
+                <label>Upload Password File:</label>
+                <input
+                    type="file"
+                    accept=".txt"
+                    onChange={handleFileUpload}
+                />
+            </div>
+
             <div className="verification-results">
                 <p dangerouslySetInnerHTML={{ __html: verificationMessage }}></p>
             </div>
