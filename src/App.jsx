@@ -125,6 +125,7 @@ const App = () => {
                     className='n'
                     type="number"
                     min="1"
+                    
                     onChange={(e) => setPasswordLength(Number(e.target.value))}
                 />
             </div>
@@ -162,10 +163,10 @@ const App = () => {
             <div className="input-group">
                 <label>Original Password:</label>
                 <input
-                    type="text"
+                    type="password"
                     placeholder="Enter your original Password..."
                     className="input"
-                    value={originPassword}
+                    
                     onChange={(e) => setOriginPassword(e.target.value)}
                 />
                 <button className="btn" onClick={verifyPasswords}>Verify Original</button>
@@ -174,10 +175,10 @@ const App = () => {
             <div className="input-group">
                 <label>Encrypted Password:</label>
                 <input
-                    type="text"
+                    type="password"
                     placeholder="Enter your encrypted Password..."
                     className="input"
-                    value={encryptedPassword}
+                    
                     onChange={(e) => setEncryptedPassword(e.target.value)}
                 />
                 <button className="btn" onClick={verifyPasswords}>Verify Encrypted</button>
