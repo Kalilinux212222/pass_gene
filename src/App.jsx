@@ -7,7 +7,7 @@ const App = () => {
     const [generatedPassword, setGeneratedPassword] = useState('');
     const [generatedEncryptedPassword, setGeneratedEncryptedPassword] = useState('');
     const [verificationMessage, setVerificationMessage] = useState('');
-    const [passwordLength, setPasswordLength] = useState(12); // Default password length
+    const [passwordLength, setPasswordLength] = useState(10); // Default password length
     const [includeLetters, setIncludeLetters] = useState(true);
     const [includeNumbers, setIncludeNumbers] = useState(true);
     const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
@@ -125,7 +125,7 @@ const App = () => {
                     className='n'
                     type="number"
                     min="1"
-                    
+                    value={passwordLength}
                     onChange={(e) => setPasswordLength(Number(e.target.value))}
                 />
             </div>
