@@ -3,9 +3,7 @@
   margin: auto;
   color: rgb(255, 255, 255);
 }
-.n{
-  color: rgb(0, 0, 0);
-}
+
 .input {
   color: white;
   border: 2px solid #8707ff;
@@ -161,5 +159,5 @@ h1 {
 p {
   margin: 5px 0;
   padding-top: 5px;
-  color: #000000;
+  color: #ffffff;
 }

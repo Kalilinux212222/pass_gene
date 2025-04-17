@@ -57,15 +57,19 @@ const App = () => {
         return encryptedPassword.split('').reverse().join('');
     };
 
-    const verifyPasswords = () => {
-        const decryptedPassword = decryptPassword(generatedEncryptedPassword);
+    const verifyOriginalPassword = () => {
         let message = '';
-
         if (originPassword === generatedPassword) {
             message += 'Original password is correct!<br />';
         } else {
             message += 'Original password is incorrect.<br />';
         }
+        setVerificationMessage(message);
+    };
+
+    const verifyEncryptedPassword = () => {
+        const decryptedPassword = decryptPassword(generatedEncryptedPassword);
+        let message = '';
 
         if (encryptedPassword === generatedEncryptedPassword) {
             message += 'Encrypted password is correct!<br />';
@@ -79,24 +83,7 @@ const App = () => {
             message += 'Decrypted password does not match the original password.<br />';
         }
 
-        setVerificationMessage(message);
-    };
-
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0 ];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const content = e.target.result;
-                const passwords = content.split('\n').map(line => line.trim()).filter(line => line);
-                passwords.forEach(password => {
-                    const encrypted = generateEncryptedPassword(password);
-                    localStorage.setItem(password, encrypted);
-                });
-                alert('Passwords uploaded and stored successfully!');
-            };
-            reader.readAsText(file);
-        }
+        setVerificationMessage(prev => prev + message);
     };
 
     const downloadPasswords = () => {
@@ -122,10 +109,8 @@ const App = () => {
             <div className="input-group">
                 <label>Password Length:</label>
                 <input
-                    className='n'
-                    type="number"
-                    min="1"
-                    value={passwordLength}
+                    className='input'
+                    type="text"
                     onChange={(e) => setPasswordLength(Number(e.target.value))}
                 />
             </div>
@@ -166,10 +151,9 @@ const App = () => {
                     type="password"
                     placeholder="Enter your original Password..."
                     className="input"
-                    
                     onChange={(e) => setOriginPassword(e.target.value)}
                 />
-                <button className="btn" onClick={verifyPasswords}>Verify Original</button>
+                <button className="btn" onClick={verifyOriginalPassword}>Verify Original</button>
             </div>
 
             <div className="input-group">
@@ -178,10 +162,9 @@ const App = () => {
                     type="password"
                     placeholder="Enter your encrypted Password..."
                     className="input"
-                    
                     onChange={(e) => setEncryptedPassword(e.target.value)}
                 />
-                <button className="btn" onClick={verifyPasswords}>Verify Encrypted</button>
+                <button className="btn" onClick={verifyEncryptedPassword}>Verify Encrypted</button>
             </div>
 
             <div className="verification-results">
