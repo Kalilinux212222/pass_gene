@@ -183,15 +183,6 @@ const App = () => {
                 <button className="btn" onClick={verifyPasswords}>Verify Encrypted</button>
             </div>
 
-            <div className="input-group">
-                <label>Upload Password File:</label>
-                <input
-                    type="file"
-                    accept=".txt"
-                    onChange={handleFileUpload}
-                />
-            </div>
-
             <div className="verification-results">
                 <p dangerouslySetInnerHTML={{ __html: verificationMessage }}></p>
             </div>
