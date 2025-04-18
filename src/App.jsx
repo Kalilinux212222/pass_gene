@@ -11,6 +11,7 @@ const App = () => {
     const [includeLetters, setIncludeLetters] = useState(true);
     const [includeNumbers, setIncludeNumbers] = useState(true);
     const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
+    const [lastGeneratedPassword, setLastGeneratedPassword] = useState('');
 
     useEffect(() => {
         // Load stored passwords from local storage on component mount
@@ -41,6 +42,13 @@ const App = () => {
             password += randomChar;
         }
 
+        // Check for duplicate password
+        if (password === lastGeneratedPassword) {
+            setVerificationMessage('Generated password is a duplicate of the last one!');
+            return;
+        }
+
+        setLastGeneratedPassword(password);
         setGeneratedPassword(password);
         const encrypted = generateEncryptedPassword(password);
         setGeneratedEncryptedPassword(encrypted);
@@ -99,6 +107,7 @@ const App = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url); // Clean up the URL object
     };
+
     const resetAll = () => {
         setOriginPassword('');
         setEncryptedPassword('');
@@ -109,6 +118,7 @@ const App = () => {
         setIncludeLetters(true);
         setIncludeNumbers(true);
         setIncludeSpecialChars(true);
+        setLastGeneratedPassword(''); // Reset last generated password
         localStorage.removeItem('generatedPassword');
         localStorage.removeItem('generatedEncryptedPassword');
     };
@@ -125,7 +135,7 @@ const App = () => {
               <form className="space-y-6 max-w-full md:max-w-md" onSubmit={e => e.preventDefault()}>
                 <div>
                   <label htmlFor="passwordLength" className="block mb-2 text-white text-sm">
-                    How many passwords do you want?
+                    How many letters are you looking for to do?
                   </label>
                   <input
                     id="passwordLength"
@@ -144,7 +154,7 @@ const App = () => {
                       onChange={(e) => setIncludeLetters(e.target.checked)}
                       className="w-4 h-4 text-purple-700"
                     />
-                    <span>wanna characters</span>
+                    <span>Characters</span>
                   </label>
                   <label className="flex items-center space-x-2">
                     <input
@@ -153,16 +163,16 @@ const App = () => {
                       onChange={(e) => setIncludeNumbers(e.target.checked)}
                       className="w-4 h-4 text-purple-700"
                     />
-                    <span>wanna numbers</span>
+                    <span>Numbers</span>
                   </label>
                   <label className="flex items-center space-x-2">
                     <input
                       type="checkbox"
                       checked={includeSpecialChars}
                       onChange={(e) => setIncludeSpecialChars(e.target.checked)}
-                      className="w-4 h-4 text-purple-700"
+                      className="w-4 h-4 text-purple-500"
                     />
-                    <span>wanna special characters</span>
+                    <span>Special Characters</span>
                   </label>
                 </div>
 
@@ -200,13 +210,13 @@ const App = () => {
             {/* Left Bottom Section */}
             <section>
               <h2 className="text-white text-lg font-mono tracking-widest mb-6">
-                Verification Password
+                Verification Password 
               </h2>
               <form className="space-y-6 max-w-full md:max-w-md" onSubmit={e => e.preventDefault()}>
                 <div>
                   <input
                     type="password"
-                    placeholder="Enter your original Pass"
+                    placeholder="Enter your generated password"
                     className="w-full rounded-lg border-2 border-purple-700 px-4 py-2 bg-black text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-purple-700"
                     value={originPassword}
                     onChange={(e) => setOriginPassword(e.target.value)}
@@ -215,7 +225,7 @@ const App = () => {
                 <button
                   type="button"
                   onClick={verifyOriginalPassword}
-                  className="w-full text-xs font-semibold text-white border-2 border-blue-900 rounded-lg py-2 bg-gradient-to-r from-blue-900 via-blue-900 to-blue-700 hover:from-blue-800 hover:to-blue-600 transition-colors"
+                  className="w-full text-xs font-semibold text-white border-2 border-purple-700 rounded-lg py-2 bg-gradient-to-r from-purple-700 via-purple-700 to-orange-600 hover:from-purple-800 hover:to-orange-700 transition-colors"
                 >
                   VERIFY ORIGINAL
                 </button>
@@ -223,7 +233,7 @@ const App = () => {
                 <div>
                   <input
                     type="password"
-                    placeholder="Enter your encrypted P"
+                    placeholder="Enter your encrypted code"
                     className="w-full rounded-lg border-2 border-purple-700 px-4 py-2 bg-black text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-purple-700"
                     value={encryptedPassword}
                     onChange={(e) => setEncryptedPassword(e.target.value)}
