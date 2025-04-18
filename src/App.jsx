@@ -246,11 +246,7 @@ const App = () => {
               >
                 <p dangerouslySetInnerHTML={{ __html: verificationMessage }}></p>
               </div>
-              <div
-                className="border-4 border-purple-900 rounded-md p-6 max-w-full md:max-w-md text-white text-sm font-mono tracking-wide space-y-4"
-              >
-                <p dangerouslySetInnerHTML={{ __html: verificationMessage }}></p>
-              </div>
+              
               <button
                 type="button"
                 onClick={resetAll}
