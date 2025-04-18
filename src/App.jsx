@@ -140,6 +140,7 @@ const App = () => {
                   <input
                     id="passwordLength"
                     type="text"
+                    min='1'
                     value={passwordLength}
                     onChange={(e) => setPasswordLength(Number(e.target.value))}
                     className="w-full rounded-lg border-2 border-purple-700 px-4 py-2 bg-black text-white focus:outline-none focus:ring-2 focus:ring-purple-700"
