@@ -76,7 +76,7 @@ const App = () => {
 
     const verifyOriginalPassword = () => {
         let message = '';
-        if (originPassword === allPasswords) {
+        if (allPasswords.includes(originPassword)) {
             message += 'Original password is correct!<br />';
         } else {
             message += 'Original password is incorrect.<br />';
