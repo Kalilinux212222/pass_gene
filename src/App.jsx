@@ -105,7 +105,7 @@ const App = () => {
         
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'passwords.txt'; // Name of the file to be downloaded
+        a.download = 'GeneratedPw.txt'; // Name of the file to be downloaded
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
