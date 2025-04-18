@@ -81,18 +81,18 @@ const App = () => {
 
         if (encryptedPassword === generatedEncryptedPassword) {
             message += 'Encrypted password is correct!<br />';
-            message = '';
+            
         } else {
             message += 'Encrypted password is incorrect.<br />';
-            message = ''
+          
         }
 
         if (decryptedPassword === originPassword) {
             message += 'Decrypted password matches the original password!<br />';
-            message = '';
+            
         } else {
             message += 'Decrypted password does not match the original password.<br />';
-            message = '';
+            
         }
 
         setVerificationMessage(prev => prev + message);
