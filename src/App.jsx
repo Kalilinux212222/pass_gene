@@ -99,77 +99,194 @@ const App = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url); // Clean up the URL object
     };
+    const resetAll = () => {
+        setOriginPassword('');
+        setEncryptedPassword('');
+        setGeneratedPassword('');
+        setGeneratedEncryptedPassword('');
+        setVerificationMessage('');
+        setPasswordLength(0);
+        setIncludeLetters(true);
+        setIncludeNumbers(true);
+        setIncludeSpecialChars(true);
+        localStorage.removeItem('generatedPassword');
+        localStorage.removeItem('generatedEncryptedPassword');
+    };
 
     return (
-        <div className="container">
-            <h1>Password Generator</h1>
-            <div className="output">Generated Password: {generatedPassword}</div>
-            <div className="output">Generated Encrypted Password: {generatedEncryptedPassword}</div>
+        <div className="max-w-7xl mx-auto justify-center">
+          <header className="mb-12">
+            <h1 className="text-white text-3xl font-serif">Password Generator</h1>
+          </header>
 
-            <div className="input-group">
-                <label>Password Length:</label>
-                <input
-                    className='input'
+          <main className="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-20">
+            {/* Left Top Section */}
+            <section>
+              <form className="space-y-6 max-w-full md:max-w-md" onSubmit={e => e.preventDefault()}>
+                <div>
+                  <label htmlFor="passwordLength" className="block mb-2 text-white text-sm">
+                    How many passwords do you want?
+                  </label>
+                  <input
+                    id="passwordLength"
                     type="text"
+                    value={passwordLength}
                     onChange={(e) => setPasswordLength(Number(e.target.value))}
-                />
-            </div>
+                    className="w-full rounded-lg border-2 border-purple-700 px-4 py-2 bg-black text-white focus:outline-none focus:ring-2 focus:ring-purple-700"
+                  />
+                </div>
 
-            <div className="input-group">
-                <label>
+                <div className="space-y-2 text-xs font-semibold">
+                  <label className="flex items-center space-x-2">
                     <input
-                        type="checkbox"
-                        checked={includeLetters}
-                        onChange={(e) => setIncludeLetters(e.target.checked)}
+                      type="checkbox"
+                      checked={includeLetters}
+                      onChange={(e) => setIncludeLetters(e.target.checked)}
+                      className="w-4 h-4 text-purple-700"
                     />
-                    Include Letters
-                </label>
-                <label>
+                    <span>wanna characters</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
                     <input
-                        type="checkbox"
-                        checked={includeNumbers}
-                        onChange={(e) => setIncludeNumbers(e.target.checked)}
+                      type="checkbox"
+                      checked={includeNumbers}
+                      onChange={(e) => setIncludeNumbers(e.target.checked)}
+                      className="w-4 h-4 text-purple-700"
                     />
-                    Include Numbers
-                </label>
-                <label>
+                    <span>wanna numbers</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
                     <input
-                        type="checkbox"
-                        checked={includeSpecialChars}
-                        onChange={(e) => setIncludeSpecialChars(e.target.checked)}
+                      type="checkbox"
+                      checked={includeSpecialChars}
+                      onChange={(e) => setIncludeSpecialChars(e.target.checked)}
+                      className="w-4 h-4 text-purple-700"
                     />
-                    Include Special Characters
-                </label>
-            </div>
+                    <span>wanna special characters</span>
+                  </label>
+                </div>
 
-            <button className="btn" onClick={generatePassword}>Generate Password</button>
-            <button className="btn" onClick={downloadPasswords}>Download Passwords</button>
+                <button
+                  type="button"
+                  onClick={generatePassword}
+                  className="w-full text-xs font-semibold text-white border-2 border-purple-700 rounded-lg py-2 bg-gradient-to-r from-purple-700 via-purple-700 to-orange-500 hover:from-purple-800 hover:to-orange-700 transition-colors"
+                >
+                  GENERATE PASSWORD
+                </button>
+              </form>
+            </section>
 
-            <div className="input-group">
-                <label>Original Password:</label>
-                <input
+            {/* Right Top Section */}
+            <section>
+              <div
+                className="border-4 border-purple-900 rounded-md p-6 min-h-[140px] max-w-full md:max-w-md text-white text-sm space-y-6"
+              >
+                <p>
+                  <span className="font-normal">Generated Password : {generatedPassword}</span>
+                </p>
+                <p>
+                  <span className="font-normal">Encrypted Password : {generatedEncryptedPassword}</span>
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={downloadPasswords}
+                className="mt-6 w-full max-w-full md:max-w-md text-xs font-semibold text-white border-2 border-blue-900 rounded-lg py-2 bg-gradient-to-r from-blue-900 via-blue-900 to-blue-700 hover:from-blue-800 hover:to-blue-600 transition-colors"
+              >
+                DOWNLOAD PASSWORDS
+              </button>
+            </section>
+
+            {/* Left Bottom Section */}
+            <section>
+              <h2 className="text-white text-lg font-mono tracking-widest mb-6">
+                Verification Password
+              </h2>
+              <form className="space-y-6 max-w-full md:max-w-md" onSubmit={e => e.preventDefault()}>
+                <div>
+                  <input
                     type="password"
-                    placeholder="Enter your original Password..."
-                    className="input"
+                    placeholder="Enter your original Pass"
+                    className="w-full rounded-lg border-2 border-purple-700 px-4 py-2 bg-black text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-purple-700"
+                    value={originPassword}
                     onChange={(e) => setOriginPassword(e.target.value)}
-                />
-                <button className="btn" onClick={verifyOriginalPassword}>Verify Original</button>
-            </div>
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={verifyOriginalPassword}
+                  className="w-full text-xs font-semibold text-white border-2 border-blue-900 rounded-lg py-2 bg-gradient-to-r from-blue-900 via-blue-900 to-blue-700 hover:from-blue-800 hover:to-blue-600 transition-colors"
+                >
+                  VERIFY ORIGINAL
+                </button>
 
-            <div className="input-group">
-                <label>Encrypted Password:</label>
-                <input
+                <div>
+                  <input
                     type="password"
-                    placeholder="Enter your encrypted Password..."
-                    className="input"
+                    placeholder="Enter your encrypted P"
+                    className="w-full rounded-lg border-2 border-purple-700 px-4 py-2 bg-black text-white text-xs font-mono focus:outline-none focus:ring-2 focus:ring-purple-700"
+                    value={encryptedPassword}
                     onChange={(e) => setEncryptedPassword(e.target.value)}
-                />
-                <button className="btn" onClick={verifyEncryptedPassword}>Verify Encrypted</button>
-            </div>
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={verifyEncryptedPassword}
+                  className="w-full text-xs font-semibold text-white border-2 border-purple-700 rounded-lg py-2 bg-gradient-to-r from-purple-700 via-purple-700 to-orange-600 hover:from-purple-800 hover:to-orange-700 transition-colors"
+                >
+                  VERIFY ENCRYPTED
+                </button>
+              </form>
+            </section>
 
-            <div className="verification-results">
+            {/* Right Bottom Section */}
+            <section>
+              <div
+                className="border-4 border-purple-900 rounded-md p-6 max-w-full md:max-w-md text-white text-sm font-mono tracking-wide space-y-4"
+              >
                 <p dangerouslySetInnerHTML={{ __html: verificationMessage }}></p>
-            </div>
+              </div>
+              <div
+                className="border-4 border-purple-900 rounded-md p-6 max-w-full md:max-w-md text-white text-sm font-mono tracking-wide space-y-4"
+              >
+                <p dangerouslySetInnerHTML={{ __html: verificationMessage }}></p>
+              </div>
+              <button
+                type="button"
+                onClick={resetAll}
+                className="mt-6 w-full max-w-full md:max-w-md text-xs font-semibold text-white border-2 border-red-700 rounded-lg py-2 bg-gradient-to-r from-red-700 via-red-700 to-red-500 hover:from-red-800 hover:to-red-600 transition-colors"
+              >
+                RESET
+              </button>
+            </section>
+          </main>
+          <style>{`
+            @media (max-width: 460px) {
+              main {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+              }
+              input[type="text"],
+              input[type="password"],
+              input[type="number"] {
+                font-size: 12px !important;
+                padding: 0.4rem 0.75rem !important;
+              }
+              button {
+                font-size: 11px !important;
+                padding: 0.4rem 0.75rem !important;
+              }
+              h1 {
+                font-size: 1.5rem !important;
+              }
+              h2 {
+                font-size: 1.125rem !important;
+              }
+              .border-4 {
+                padding: 0.75rem !important;
+              }
+            }
+          `}</style>
         </div>
     );
 };
