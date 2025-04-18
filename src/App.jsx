@@ -12,13 +12,16 @@ const App = () => {
     const [includeNumbers, setIncludeNumbers] = useState(true);
     const [includeSpecialChars, setIncludeSpecialChars] = useState(true);
     const [lastGeneratedPassword, setLastGeneratedPassword] = useState('');
+    const [allPasswords, setAllPasswords] = useState([]); // New state for all passwords
 
     useEffect(() => {
         // Load stored passwords from local storage on component mount
         const storedPassword = localStorage.getItem('generatedPassword');
         const storedEncryptedPassword = localStorage.getItem('generatedEncryptedPassword');
+        const storedAllPasswords = JSON.parse(localStorage.getItem('allPasswords')) || []; // Load all passwords
         if (storedPassword) setGeneratedPassword(storedPassword);
         if (storedEncryptedPassword) setGeneratedEncryptedPassword(storedEncryptedPassword);
+        setAllPasswords(storedAllPasswords); // Set all passwords
     }, []);
 
     const generatePassword = () => {
@@ -52,6 +55,12 @@ const App = () => {
         setGeneratedPassword(password);
         const encrypted = generateEncryptedPassword(password);
         setGeneratedEncryptedPassword(encrypted);
+        
+        // Update all passwords
+        const updatedAllPasswords = [...allPasswords, password];
+        setAllPasswords(updatedAllPasswords);
+        localStorage.setItem('allPasswords', JSON.stringify(updatedAllPasswords)); // Store all passwords
+
         localStorage.setItem('generatedPassword', password);
         localStorage.setItem('generatedEncryptedPassword', encrypted);
         setVerificationMessage(''); // Clear previous messages
@@ -81,25 +90,21 @@ const App = () => {
 
         if (encryptedPassword === generatedEncryptedPassword) {
             message += 'Encrypted password is correct!<br />';
-            
         } else {
             message += 'Encrypted password is incorrect.<br />';
-          
         }
 
         if (decryptedPassword === originPassword) {
             message += 'Decrypted password matches the original password!<br />';
-            
         } else {
             message += 'Decrypted password does not match the original password.<br />';
-            
         }
 
-        setVerificationMessage(prev => prev + message);
+        setVerificationMessage(message);
     };
 
     const downloadPasswords = () => {
-        const passwords = `Generated Password: ${generatedPassword}\nGenerated Encrypted Password: ${generatedEncryptedPassword}`;
+        const passwords = `Generated Password: ${ generatedPassword}\nGenerated Encrypted Password: ${generatedEncryptedPassword}\nRecent Generated Password: ${lastGeneratedPassword}\nAll Passwords: ${allPasswords.join(', ')}`;
         const blob = new Blob([passwords], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         
@@ -123,8 +128,10 @@ const App = () => {
         setIncludeNumbers(true);
         setIncludeSpecialChars(true);
         setLastGeneratedPassword(''); // Reset last generated password
+        setAllPasswords([]); // Reset all passwords
         localStorage.removeItem('generatedPassword');
         localStorage.removeItem('generatedEncryptedPassword');
+        localStorage.removeItem('allPasswords'); // Clear all passwords from storage
     };
 
     return (
