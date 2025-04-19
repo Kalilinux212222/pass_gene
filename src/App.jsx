@@ -106,13 +106,13 @@ const App = () => {
     };
 
     const downloadPasswords = () => {
-        const passwords = `Generated Password: ${ generatedPassword}\nGenerated Encrypted Password: ${generatedEncryptedPassword}\nRecent Generated Password: ${lastGeneratedPassword}\nAll Passwords: ${allPasswords.join(', ')}`;
+        const passwords = `Generated Password: ${ generatedPassword}\n\nGenerated Encrypted Password: ${generatedEncryptedPassword}\n\nRecent Generated Password: ${lastGeneratedPassword}\n\nAll Passwords:\n\n${allPasswords.join('\n\n')}`;
         const blob = new Blob([passwords], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'GeneratedPw.txt'; // Name of the file to be downloaded
+        a.download = 'Cipher_Generated_Passwords.txt'; // Name of the file to be downloaded
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -135,7 +135,13 @@ const App = () => {
         localStorage.removeItem('generatedEncryptedPassword');
         localStorage.removeItem('allPasswords'); // Clear all passwords from storage
     };
-
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(generatedPassword).then(() => {
+          setVerificationMessage('Password copied to clipboard!');
+      }).catch(err => {
+          setVerificationMessage('Failed to copy password.');
+      });
+    };
     return (
         
         <div className="max-w-7xl mx-auto justify-center">
@@ -207,9 +213,10 @@ const App = () => {
               <div
                 className="border-4 border-purple-900 rounded-md p-6 min-h-[140px] max-w-full md:max-w-md text-white text-sm space-y-6"
               >
-                <p>
-                  <span className="font-normal">Generated Password : {generatedPassword}</span>
+                <p className=''>
+                  <span onClick={copyToClipboard} className="font-normal">Generated Password : {generatedPassword}</span>
                 </p>
+                
                 <p>
                   <span className="font-normal">Encrypted Password : {generatedEncryptedPassword}</span>
                 </p>
