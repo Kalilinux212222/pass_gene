@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Analytics } from "@vercel/analytics/react"
 import './App.css'; // Import the CSS file for styling
 
 const App = () => {
@@ -135,7 +136,9 @@ const App = () => {
     };
 
     return (
+        
         <div className="max-w-7xl mx-auto justify-center">
+          
           <header className="mb-12">
             <h1 className="text-white my-1 text-3xl font-serif">Password Generator</h1>
           </header>
@@ -305,6 +308,7 @@ const App = () => {
               }
             }
           `}</style>
+          <Analytics/>
         </div>
     );
 };
