@@ -147,7 +147,7 @@ const App = () => {
         <div className="max-w-7xl mx-auto justify-center">
           
           <header className="mb-12">
-            <h1 className="text-white my-1 text-3xl font-serif">Password Generator</h1>
+            <h1 className="text-white my-1 text-3xl font-serif ">Password Generator</h1>
           </header>
 
           <main className="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-20">
@@ -169,7 +169,7 @@ const App = () => {
                 </div>
 
                 <div className="space-y-2 text-xs font-semibold">
-                  <label className="flex items-center space-x-2">
+                  <label className="flex items-center space-x-2 ">
                     <input
                       type="checkbox"
                       checked={includeLetters}
