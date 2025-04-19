@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import './App.css'; // Import the CSS file for styling
 
 const App = () => {
@@ -309,6 +310,7 @@ const App = () => {
             }
           `}</style>
           <Analytics/>
+          <SpeedInsights/>
         </div>
     );
 };
