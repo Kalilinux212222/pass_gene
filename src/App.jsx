@@ -147,7 +147,7 @@ const App = () => {
         <div className="max-w-7xl mx-auto justify-center">
           
           <header className="mb-12">
-            <h1 className="text-white my-1 text-3xl font-serif ">Password Generator</h1>
+            <h1 className="text-white my-3 text-2xl font-serif">Cipher.</h1>
           </header>
 
           <main className="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-20">
