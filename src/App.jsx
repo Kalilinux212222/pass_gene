@@ -170,7 +170,7 @@ const App = () => {
                       onChange={(e) => setIncludeLetters(e.target.checked)}
                       className="w-4 h-4 text-purple-700"
                     />
-                    <span>Characters</span>
+                    <span className='text-white'>Characters</span>
                   </label>
                   <label className="flex items-center space-x-2">
                     <input
@@ -179,7 +179,7 @@ const App = () => {
                       onChange={(e) => setIncludeNumbers(e.target.checked)}
                       className="w-4 h-4 text-purple-700"
                     />
-                    <span>Numbers</span>
+                    <span className='text-white'>Numbers</span>
                   </label>
                   <label className="flex items-center space-x-2">
                     <input
@@ -188,7 +188,7 @@ const App = () => {
                       onChange={(e) => setIncludeSpecialChars(e.target.checked)}
                       className="w-4 h-4 text-purple-500"
                     />
-                    <span>Special Characters</span>
+                    <span className='text-white'>Special Characters</span>
                   </label>
                 </div>
 
